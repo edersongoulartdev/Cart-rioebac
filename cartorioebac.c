@@ -3,6 +3,7 @@
 #include <locale.h> //biblioteca de alocações de texto por região
 #include <string.h> //biblioteca resposavel por cuidas das string
 
+
 void fecharPrograma() //função para fechar o programa
 {
 	printf("Encerrano programa.\n");
@@ -17,6 +18,7 @@ int registro() //função responsavel por cadastrar usuarios no sistema
 	char nome[40];
 	char sobrenome[40];
 	char cargo[40];
+	int resposta =0;
 	//final das variaveis/ string
 	
 	printf("Digite o cpf a ser cadastrado: "); //coletando informações dos usuarios
@@ -64,6 +66,30 @@ int registro() //função responsavel por cadastrar usuarios no sistema
 	fclose(file);
 	
 	system("pause");
+	
+	system("cls");
+	
+	printf("\tRealizar novo cadastro?\n");
+	printf("Digite 1 para sim, 2 para não: ");
+	
+	scanf("%d",&resposta); //%d variavel do tipo inteiro
+	
+	system("cls");
+	
+	switch (resposta)
+	{
+		case 1:
+		registro(); //chamada de funções
+		break;
+			
+		case 2:
+		return 0;
+		break;
+				
+     }
+		
+	 system("pause");
+	
 }
 
 int consulta() //função de consulta dos arquivos
@@ -71,8 +97,9 @@ int consulta() //função de consulta dos arquivos
 	setlocale(LC_ALL, "Portuguese"); //idioma do programa
 	char cpf[40];
 	char conteudo[200];
+	int resposta =0;
 	
-	printf("Digite o CPF a ser cadastrado: ");
+	printf("Digite o CPF a ser consultado: ");
 	scanf("%s",cpf);
 	
 	FILE *file;
@@ -89,28 +116,81 @@ int consulta() //função de consulta dos arquivos
 		printf("%s", conteudo);
 		printf("\n\n");
 	}
+	
+	fclose(file);
 	system("pause");
+	
+	system("cls");
+	
+	printf("Realizar nova colsulta?\n");
+	printf("Digite 1 para sim, 2 para não: \n");
+	
+	scanf("%d", &resposta);
+	
+	system("cls");
+	
+	switch (resposta)
+	{
+		case 1:
+		consulta();
+		break;
+		
+		case 2:
+		return 0;
+		break;
+	}
+	
+	system("pause");
+		
 }
 
 
 int deletar() //função de deletar os arquivos
 {
 	char cpf[40];
+	int resposta =0;
 	
-	printf("Digite o cpf a ser deletado: ");
-	scanf("%s", cpf);
-	
-	remove(cpf);
-	
-	FILE *file;
-	file = fopen(cpf,"r");
-	
-	if(file == NULL)
-	{
-		printf("Usuário não se encontra no sistema! \n");
+	while (1) 
+	{ // Loop principal //Use o while quando você não sabe quantas vezes o loop precisa ser executado
+        printf("Digite o CPF a ser deletado: ");
+        scanf("%s", cpf);
+        
+        // Tenta abrir o arquivo para verificar se ele existe
+        FILE *file = fopen(cpf, "r");
+        if (file == NULL) 
+		{
+            printf("Usuário não se encontra no sistema! \n");
+            
+        }
+		 else 
+		 {
+            fclose(file); // Fecha o arquivo antes de deletar
+            if (remove(cpf) == 0) { // Tenta deletar o arquivo
+                printf("Usuário deletado com sucesso.\n");
+            } 
+			else 
+			{
+                printf("Erro ao deletar o usuário.\n");
+            }
+        }
 		system("pause");
-	}
-}
+		system("cls");
+		// Pergunta se o usuário deseja deletar outro arquivo
+        printf("Deseja deletar mais algum usuário?\n");
+        printf("Tecle 1 para SIM ou 2 para NÃO: ");
+        scanf("%d", &resposta);
+        system("cls");
+
+        if (resposta != 1) 
+		{
+            break; // Sai do loop se a resposta não for 1
+        }
+    }
+
+    return 0; // Retorna 0 ao finalizar
+	
+	
+}  
 int main()
 {
 	int opcao=0; //1= atribuição
@@ -156,6 +236,7 @@ int main()
 			
 			case 4:
 			fecharPrograma();
+			return(0);
 			break;
 			
 			
